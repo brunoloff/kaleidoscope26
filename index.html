@@ -3,624 +3,337 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Final report for Complexity as a Kaleidoscope 2026, a workshop in Lisbon about favorite ideas in computational complexity." />
   <link rel="icon" href="data:," />
-  <title>Group photo participant map</title>
-  <style>
-    :root { color-scheme: dark; --ink: #111; --cream: #fff7df; --orange: #ff9d00; --muted: #b9ad94; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: var(--ink); color: var(--cream); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    main { width: 100%; }
-    .photo-shell { width: min(72rem, 100%); margin: 0 auto; overflow: hidden; background: #080808; }
-    .photo-stage { position: relative; width: 100%; }
-    .group-photo { display: block; width: 100%; height: auto; }
-    .participant { cursor: pointer; outline: none; }
-    .base-connector, .foreground-connector { vector-effect: non-scaling-stroke; pointer-events: none; transition: stroke .15s, stroke-width .15s, opacity .18s; }
-    .base-connector { stroke: var(--cream); stroke-width: 3; opacity: .9; }
-    .foreground-connector { stroke: var(--orange); stroke-width: 5; opacity: 0; }
-    .foreground-connector.is-preview, .foreground-connector.is-pinned { opacity: 1; }
-    .face-region { fill: #f59e0b12; stroke: var(--cream); stroke-width: 2; vector-effect: non-scaling-stroke; transition: fill .15s, stroke .15s, opacity .18s; }
-    .person-label-bg { fill: #111e; stroke: var(--cream); stroke-width: 2; vector-effect: non-scaling-stroke; transition: fill .15s, stroke .15s, opacity .18s; }
-    .person-label { fill: var(--cream); font: 750 38px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-anchor: middle; dominant-baseline: central; pointer-events: none; transition: opacity .18s; }
-    .participant:hover .face-region, .participant:focus .face-region, .participant.is-pinned .face-region { fill: #ff9d0066; stroke: var(--orange); }
-    .participant:hover .person-label-bg, .participant:focus .person-label-bg, .participant.is-pinned .person-label-bg { fill: var(--orange); stroke: var(--ink); }
-    .participant:hover .person-label, .participant:focus .person-label, .participant.is-pinned .person-label { fill: var(--ink); }
-    .labels-hover-only .base-connector,
-    .labels-hover-only .participant .face-region,
-    .labels-hover-only .participant .person-label-bg,
-    .labels-hover-only .participant .person-label { opacity: 0; }
-    .labels-hover-only .participant:hover .face-region,
-    .labels-hover-only .participant:focus .face-region,
-    .labels-hover-only .participant.is-preview .face-region,
-    .labels-hover-only .participant.is-pinned .face-region,
-    .labels-hover-only .participant:hover .person-label-bg,
-    .labels-hover-only .participant:focus .person-label-bg,
-    .labels-hover-only .participant.is-preview .person-label-bg,
-    .labels-hover-only .participant.is-pinned .person-label-bg,
-    .labels-hover-only .participant:hover .person-label,
-    .labels-hover-only .participant:focus .person-label,
-    .labels-hover-only .participant.is-preview .person-label,
-    .labels-hover-only .participant.is-pinned .person-label { opacity: 1; }
-    .label-toggle { position: absolute; z-index: 5; top: .65rem; right: .65rem; padding: .55rem .75rem; border: 1px solid #695d46; border-radius: .35rem; background: #111e; color: var(--cream); box-shadow: 0 2px 10px #0008; font: 800 .9rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; cursor: pointer; }
-    .label-toggle:hover, .label-toggle:focus-visible { border-color: var(--orange); outline: none; }
-    .label-toggle[aria-pressed="true"] { border-color: var(--orange); background: var(--orange); color: var(--ink); }
-    .person-detail { position: absolute; z-index: 3; left: 50%; bottom: 1rem; width: min(44rem, calc(100% - 2rem)); margin: 0; padding: 1rem 1.2rem; transform: translateX(-50%); border: 2px solid var(--orange); border-radius: .55rem; background: #111f; box-shadow: 0 10px 30px #0009; }
-    .person-detail[hidden] { display: none; }
-    .person-detail h2 { margin: 0 0 .85rem; font: 800 clamp(1.35rem, 3vw, 2rem)/1.1 system-ui, sans-serif; }
-    .person-detail dl { display: grid; grid-template-columns: max-content 1fr; gap: .45rem 1rem; margin: 0; }
-    .person-detail dt { color: var(--muted); }
-    .person-detail dd { margin: 0; overflow-wrap: anywhere; }
-    .person-detail a { color: var(--orange); }
-    @media (max-width: 700px) { .label-toggle { top: .4rem; right: .4rem; padding: .45rem .6rem; font-size: .72rem; } .person-detail { bottom: .5rem; width: calc(100% - 1rem); padding: .7rem .8rem; } .person-detail h2 { margin-bottom: .5rem; } .person-detail dl { grid-template-columns: max-content 1fr; } }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <title>Kaleidoscope'26 — workshop report</title>
 </head>
 <body>
-  <main>
-    <div class="photo-shell"><div class="photo-stage">
-      <button class="label-toggle" type="button" aria-pressed="false">Labels: always visible</button>
-      <svg class="group-photo" viewBox="0 0 6000 4000" role="group" aria-label="Workshop group photograph with 47 numbered participant regions" xmlns="http://www.w3.org/2000/svg">
-  <image href="group-photo.jpg" width="6000" height="4000" />
-  <g class="connector-layer" aria-hidden="true">
-    <line class="base-connector" data-participant="1" x1="1151.0" y1="1567.3" x2="1151.0" y2="616.0" />
-    <line class="base-connector" data-participant="2" x1="1330.0" y1="1620.0" x2="1330.0" y2="731.0" />
-    <line class="base-connector" data-participant="3" x1="1617.0" y1="1661.2" x2="1617.0" y2="616.0" />
-    <line class="base-connector" data-participant="4" x1="2099.5" y1="1641.2" x2="2099.5" y2="731.0" />
-    <line class="base-connector" data-participant="5" x1="2384.0" y1="1643.9" x2="2384.0" y2="616.0" />
-    <line class="base-connector" data-participant="6" x1="2618.0" y1="1627.1" x2="2618.0" y2="731.0" />
-    <line class="base-connector" data-participant="7" x1="2946.0" y1="1624.0" x2="2946.0" y2="616.0" />
-    <line class="base-connector" data-participant="8" x1="3247.5" y1="1633.4" x2="3247.5" y2="731.0" />
-    <line class="base-connector" data-participant="9" x1="3616.0" y1="1624.9" x2="3616.0" y2="616.0" />
-    <line class="base-connector" data-participant="10" x1="4126.5" y1="1694.5" x2="4126.5" y2="731.0" />
-    <line class="base-connector" data-participant="11" x1="975.5" y1="1816.1" x2="975.5" y2="906.0" />
-    <line class="base-connector" data-participant="12" x1="1121.0" y1="1736.5" x2="1121.0" y2="1021.0" />
-    <line class="base-connector" data-participant="13" x1="1337.0" y1="1817.2" x2="1337.0" y2="1136.0" />
-    <line class="base-connector" data-participant="14" x1="1627.5" y1="1758.5" x2="1627.5" y2="1251.0" />
-    <line class="base-connector" data-participant="15" x1="1810.5" y1="1748.0" x2="1810.5" y2="1366.0" />
-    <line class="base-connector" data-participant="16" x1="1905.5" y1="1795.9" x2="1905.5" y2="906.0" />
-    <line class="base-connector" data-participant="17" x1="2229.5" y1="1790.9" x2="2229.5" y2="1021.0" />
-    <line class="base-connector" data-participant="18" x1="2494.5" y1="1820.9" x2="2494.5" y2="1136.0" />
-    <line class="base-connector" data-participant="19" x1="2776.5" y1="1774.6" x2="2776.5" y2="1251.0" />
-    <line class="base-connector" data-participant="20" x1="3093.0" y1="1834.3" x2="3093.0" y2="1366.0" />
-    <line class="base-connector" data-participant="21" x1="3359.5" y1="1856.4" x2="3359.5" y2="906.0" />
-    <line class="base-connector" data-participant="22" x1="3570.5" y1="1794.7" x2="3570.5" y2="1021.0" />
-    <line class="base-connector" data-participant="23" x1="3784.5" y1="1837.2" x2="3784.5" y2="1136.0" />
-    <line class="base-connector" data-participant="24" x1="3922.0" y1="1846.8" x2="3922.0" y2="1251.0" />
-    <line class="base-connector" data-participant="25" x1="4056.5" y1="1799.8" x2="4056.5" y2="1366.0" />
-    <line class="base-connector" data-participant="26" x1="4155.0" y1="1864.3" x2="4155.0" y2="906.0" />
-    <line class="base-connector" data-participant="27" x1="4302.5" y1="1849.9" x2="4302.5" y2="1021.0" />
-    <line class="base-connector" data-participant="28" x1="4383.0" y1="1892.1" x2="4383.0" y2="1136.0" />
-    <line class="base-connector" data-participant="29" x1="4547.0" y1="1815.9" x2="4547.0" y2="1251.0" />
-    <line class="base-connector" data-participant="30" x1="4619.5" y1="1868.0" x2="4619.5" y2="1366.0" />
-    <line class="base-connector" data-participant="31" x1="4696.0" y1="1828.1" x2="4696.0" y2="906.0" />
-    <line class="base-connector" data-participant="32" x1="4916.0" y1="1798.0" x2="4916.0" y2="1021.0" />
-    <line class="base-connector" data-participant="33" x1="5095.5" y1="1787.7" x2="5095.5" y2="1136.0" />
-    <line class="base-connector" data-participant="34" x1="5135.5" y1="1872.0" x2="5135.5" y2="1251.0" />
-    <line class="base-connector" data-participant="35" x1="5407.5" y1="1812.5" x2="5407.5" y2="1366.0" />
-    <line class="base-connector" data-participant="36" x1="1386.0" y1="2413.9" x2="1386.0" y2="2684.0" />
-    <line class="base-connector" data-participant="37" x1="1728.5" y1="2341.5" x2="1728.5" y2="2799.0" />
-    <line class="base-connector" data-participant="38" x1="2172.5" y1="2388.5" x2="2172.5" y2="2914.0" />
-    <line class="base-connector" data-participant="39" x1="2480.5" y1="2361.6" x2="2480.5" y2="2684.0" />
-    <line class="base-connector" data-participant="40" x1="2699.5" y1="2380.0" x2="2699.5" y2="2799.0" />
-    <line class="base-connector" data-participant="41" x1="2954.0" y1="2343.9" x2="2954.0" y2="2914.0" />
-    <line class="base-connector" data-participant="42" x1="3289.5" y1="2308.3" x2="3289.5" y2="2684.0" />
-    <line class="base-connector" data-participant="43" x1="3568.0" y1="2339.4" x2="3568.0" y2="2799.0" />
-    <line class="base-connector" data-participant="44" x1="3886.5" y1="2348.5" x2="3886.5" y2="2914.0" />
-    <line class="base-connector" data-participant="45" x1="4250.0" y1="2358.9" x2="4250.0" y2="2684.0" />
-    <line class="base-connector" data-participant="46" x1="4732.5" y1="2377.6" x2="4732.5" y2="2799.0" />
-    <line class="base-connector" data-participant="47" x1="5141.0" y1="2413.1" x2="5141.0" y2="2914.0" />
-  </g>
-  <g class="participant-overlays">
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 1: Farzan Byramji" data-participant="1">
-      <ellipse class="face-region" cx="1151.0" cy="1624.0" rx="65.3" ry="78.7" />
-      <rect class="person-label-bg" x="891.0" y="524.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1151.0" y="570.0">Farzan Byramji</text>
-      <title>Participant 1: Farzan Byramji</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 2: Manmatha Roy" data-participant="2">
-      <ellipse class="face-region" cx="1330.0" cy="1672.0" rx="59.8" ry="72.2" />
-      <rect class="person-label-bg" x="1070.0" y="639.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1330.0" y="685.0">Manmatha Roy</text>
-      <title>Participant 2: Manmatha Roy</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 3: Chandrima Kayal" data-participant="3">
-      <ellipse class="face-region" cx="1617.0" cy="1712.0" rx="58.5" ry="70.5" />
-      <rect class="person-label-bg" x="1357.0" y="524.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1617.0" y="570.0">Chandrima Kayal</text>
-      <title>Participant 3: Chandrima Kayal</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 4: Ian Mertz" data-participant="4">
-      <ellipse class="face-region" cx="2099.5" cy="1692.5" rx="59.2" ry="71.3" />
-      <rect class="person-label-bg" x="1839.5" y="639.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2099.5" y="685.0">Ian Mertz</text>
-      <title>Participant 4: Ian Mertz</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 5: Valentin Imbach" data-participant="5">
-      <ellipse class="face-region" cx="2384.0" cy="1690.0" rx="53.0" ry="64.0" />
-      <rect class="person-label-bg" x="2124.0" y="524.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2384.0" y="570.0">Valentin Imbach</text>
-      <title>Participant 5: Valentin Imbach</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 6: Deniz Imrek" data-participant="6">
-      <ellipse class="face-region" cx="2618.0" cy="1685.0" rx="66.6" ry="80.4" />
-      <rect class="person-label-bg" x="2358.0" y="639.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2618.0" y="685.0">Deniz Imrek</text>
-      <title>Participant 6: Deniz Imrek</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 7: Bruno Bauwens" data-participant="7">
-      <ellipse class="face-region" cx="2946.0" cy="1676.0" rx="59.8" ry="72.2" />
-      <rect class="person-label-bg" x="2686.0" y="524.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2946.0" y="570.0">Bruno Bauwens</text>
-      <title>Participant 7: Bruno Bauwens</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 8: Nitin Saurabh" data-participant="8">
-      <ellipse class="face-region" cx="3247.5" cy="1689.5" rx="64.6" ry="77.9" />
-      <rect class="person-label-bg" x="2987.5" y="639.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3247.5" y="685.0">Nitin Saurabh</text>
-      <title>Participant 8: Nitin Saurabh</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 9: Ronen Shaltiel" data-participant="9">
-      <ellipse class="face-region" cx="3616.0" cy="1671.0" rx="53.0" ry="64.0" />
-      <rect class="person-label-bg" x="3356.0" y="524.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3616.0" y="570.0">Ronen Shaltiel</text>
-      <title>Participant 9: Ronen Shaltiel</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 10: Morgan Shirley" data-participant="10">
-      <ellipse class="face-region" cx="4126.5" cy="1743.5" rx="56.4" ry="68.1" />
-      <rect class="person-label-bg" x="3866.5" y="639.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4126.5" y="685.0">Morgan Shirley</text>
-      <title>Participant 10: Morgan Shirley</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 11: Sreejata Bhattacharya" data-participant="11">
-      <ellipse class="face-region" cx="975.5" cy="1880.5" rx="74.1" ry="89.4" />
-      <rect class="person-label-bg" x="715.5" y="814.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="975.5" y="860.0">Sreejata Bhattacharya</text>
-      <title>Participant 11: Sreejata Bhattacharya</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 12: Ninad Rajgopal" data-participant="12">
-      <ellipse class="face-region" cx="1121.0" cy="1792.0" rx="63.9" ry="77.1" />
-      <rect class="person-label-bg" x="861.0" y="929.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1121.0" y="975.0">Ninad Rajgopal</text>
-      <title>Participant 12: Ninad Rajgopal</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 13: Ian Orzel" data-participant="13">
-      <ellipse class="face-region" cx="1337.0" cy="1881.0" rx="73.4" ry="88.6" />
-      <rect class="person-label-bg" x="1077.0" y="1044.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1337.0" y="1090.0">Ian Orzel</text>
-      <title>Participant 13: Ian Orzel</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 14: Théo Borém Fabris" data-participant="14">
-      <ellipse class="face-region" cx="1627.5" cy="1820.5" rx="71.4" ry="86.1" />
-      <rect class="person-label-bg" x="1367.5" y="1159.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1627.5" y="1205.0">Théo Borém Fabris</text>
-      <title>Participant 14: Théo Borém Fabris</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 15: Amir Shpilka" data-participant="15">
-      <ellipse class="face-region" cx="1810.5" cy="1806.5" rx="67.3" ry="81.2" />
-      <rect class="person-label-bg" x="1550.5" y="1274.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1810.5" y="1320.0">Amir Shpilka</text>
-      <title>Participant 15: Amir Shpilka</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 16: Manny Levine" data-participant="16">
-      <ellipse class="face-region" cx="1905.5" cy="1855.5" rx="68.7" ry="82.8" />
-      <rect class="person-label-bg" x="1645.5" y="814.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1905.5" y="860.0">Manny Levine</text>
-      <title>Participant 16: Manny Levine</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 17: Petr Chmel" data-participant="17">
-      <ellipse class="face-region" cx="2229.5" cy="1850.5" rx="68.7" ry="82.8" />
-      <rect class="person-label-bg" x="1969.5" y="929.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2229.5" y="975.0">Petr Chmel</text>
-      <title>Participant 17: Petr Chmel</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 18: Abhinav Vaishya" data-participant="18">
-      <ellipse class="face-region" cx="2494.5" cy="1873.5" rx="60.5" ry="73.0" />
-      <rect class="person-label-bg" x="2234.5" y="1044.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2494.5" y="1090.0">Abhinav Vaishya</text>
-      <title>Participant 18: Abhinav Vaishya</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 19: Rishav Gupta" data-participant="19">
-      <ellipse class="face-region" cx="2776.5" cy="1829.5" rx="63.2" ry="76.3" />
-      <rect class="person-label-bg" x="2516.5" y="1159.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2776.5" y="1205.0">Rishav Gupta</text>
-      <title>Participant 19: Rishav Gupta</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 20: Tamana Kochmann" data-participant="20">
-      <ellipse class="face-region" cx="3093.0" cy="1891.0" rx="65.3" ry="78.7" />
-      <rect class="person-label-bg" x="2833.0" y="1274.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3093.0" y="1320.0">Tamana Kochmann</text>
-      <title>Participant 20: Tamana Kochmann</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 21: Veerendra Kumar" data-participant="21">
-      <ellipse class="face-region" cx="3359.5" cy="1912.5" rx="64.6" ry="77.9" />
-      <rect class="person-label-bg" x="3099.5" y="814.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3359.5" y="860.0">Veerendra Kumar</text>
-      <title>Participant 21: Veerendra Kumar</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 22: Francesco Carboni" data-participant="22">
-      <ellipse class="face-region" cx="3570.5" cy="1855.5" rx="70.0" ry="84.5" />
-      <rect class="person-label-bg" x="3310.5" y="929.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3570.5" y="975.0">Francesco Carboni</text>
-      <title>Participant 22: Francesco Carboni</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 23: Dean Doron" data-participant="23">
-      <ellipse class="face-region" cx="3784.5" cy="1888.5" rx="59.2" ry="71.3" />
-      <rect class="person-label-bg" x="3524.5" y="1044.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3784.5" y="1090.0">Dean Doron</text>
-      <title>Participant 23: Dean Doron</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 24: Mohit Jayanti Gurumukhani" data-participant="24">
-      <ellipse class="face-region" cx="3922.0" cy="1907.0" rx="69.4" ry="83.6" />
-      <rect class="person-label-bg" x="3662.0" y="1159.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3922.0" y="1205.0">Mohit Jayanti Gurumukh…</text>
-      <title>Participant 24: Mohit Jayanti Gurumukhani</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 25: João Ribeiro" data-participant="25">
-      <ellipse class="face-region" cx="4056.5" cy="1853.5" rx="61.9" ry="74.6" />
-      <rect class="person-label-bg" x="3796.5" y="1274.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4056.5" y="1320.0">João Ribeiro</text>
-      <title>Participant 25: João Ribeiro</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 26: Varun Ramanathan" data-participant="26">
-      <ellipse class="face-region" cx="4155.0" cy="1921.0" rx="65.3" ry="78.7" />
-      <rect class="person-label-bg" x="3895.0" y="814.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4155.0" y="860.0">Varun Ramanathan</text>
-      <title>Participant 26: Varun Ramanathan</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 27: Anup Rao" data-participant="27">
-      <ellipse class="face-region" cx="4302.5" cy="1902.5" rx="60.5" ry="73.0" />
-      <rect class="person-label-bg" x="4042.5" y="929.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4302.5" y="975.0">Anup Rao</text>
-      <title>Participant 27: Anup Rao</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 28: Chin Ho Lee" data-participant="28">
-      <ellipse class="face-region" cx="4383.0" cy="1950.0" rx="66.6" ry="80.4" />
-      <rect class="person-label-bg" x="4123.0" y="1044.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4383.0" y="1090.0">Chin Ho Lee</text>
-      <title>Participant 28: Chin Ho Lee</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 29: Yogesh Dahiya" data-participant="29">
-      <ellipse class="face-region" cx="4547.0" cy="1869.0" rx="61.2" ry="73.8" />
-      <rect class="person-label-bg" x="4287.0" y="1159.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4547.0" y="1205.0">Yogesh Dahiya</text>
-      <title>Participant 29: Yogesh Dahiya</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 30: Yassine Ghannane" data-participant="30">
-      <ellipse class="face-region" cx="4619.5" cy="1926.5" rx="67.3" ry="81.2" />
-      <rect class="person-label-bg" x="4359.5" y="1274.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4619.5" y="1320.0">Yassine Ghannane</text>
-      <title>Participant 30: Yassine Ghannane</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 31: Pratyush Vempati" data-participant="31">
-      <ellipse class="face-region" cx="4696.0" cy="1886.0" rx="66.6" ry="80.4" />
-      <rect class="person-label-bg" x="4436.0" y="814.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4696.0" y="860.0">Pratyush Vempati</text>
-      <title>Participant 31: Pratyush Vempati</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 32: Kunal Mittal" data-participant="32">
-      <ellipse class="face-region" cx="4916.0" cy="1857.0" rx="68.0" ry="82.0" />
-      <rect class="person-label-bg" x="4656.0" y="929.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4916.0" y="975.0">Kunal Mittal</text>
-      <title>Participant 32: Kunal Mittal</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 33: Jonas Conneryd" data-participant="33">
-      <ellipse class="face-region" cx="5095.5" cy="1848.5" rx="70.0" ry="84.5" />
-      <rect class="person-label-bg" x="4835.5" y="1044.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="5095.5" y="1090.0">Jonas Conneryd</text>
-      <title>Participant 33: Jonas Conneryd</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 34: David Engström" data-participant="34">
-      <ellipse class="face-region" cx="5135.5" cy="1937.5" rx="75.5" ry="91.0" />
-      <rect class="person-label-bg" x="4875.5" y="1159.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="5135.5" y="1205.0">David Engström</text>
-      <title>Participant 34: David Engström</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 35: Nithish Raja" data-participant="35">
-      <ellipse class="face-region" cx="5407.5" cy="1874.5" rx="71.4" ry="86.1" />
-      <rect class="person-label-bg" x="5147.5" y="1274.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="5407.5" y="1320.0">Nithish Raja</text>
-      <title>Participant 35: Nithish Raja</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 36: Émile Larroque" data-participant="36">
-      <ellipse class="face-region" cx="1386.0" cy="2349.0" rx="74.8" ry="90.2" />
-      <rect class="person-label-bg" x="1126.0" y="2684.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1386.0" y="2730.0">Émile Larroque</text>
-      <title>Participant 36: Émile Larroque</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 37: Mary Wootters" data-participant="37">
-      <ellipse class="face-region" cx="1728.5" cy="2279.5" rx="71.4" ry="86.1" />
-      <rect class="person-label-bg" x="1468.5" y="2799.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="1728.5" y="2845.0">Mary Wootters</text>
-      <title>Participant 37: Mary Wootters</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 38: Saraswati Girish Nanoti" data-participant="38">
-      <ellipse class="face-region" cx="2172.5" cy="2326.5" rx="71.4" ry="86.1" />
-      <rect class="person-label-bg" x="1912.5" y="2914.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2172.5" y="2960.0">Saraswati Girish Nanoti</text>
-      <title>Participant 38: Saraswati Girish Nanoti</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 39: Arka Ray" data-participant="39">
-      <ellipse class="face-region" cx="2480.5" cy="2298.5" rx="72.8" ry="87.7" />
-      <rect class="person-label-bg" x="2220.5" y="2684.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2480.5" y="2730.0">Arka Ray</text>
-      <title>Participant 39: Arka Ray</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 40: Bruno Loff" data-participant="40">
-      <ellipse class="face-region" cx="2699.5" cy="2314.5" rx="75.5" ry="91.0" />
-      <rect class="person-label-bg" x="2439.5" y="2799.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2699.5" y="2845.0">Bruno Loff</text>
-      <title>Participant 40: Bruno Loff</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 41: Rahul Santhanam" data-participant="41">
-      <ellipse class="face-region" cx="2954.0" cy="2279.0" rx="74.8" ry="90.2" />
-      <rect class="person-label-bg" x="2694.0" y="2914.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="2954.0" y="2960.0">Rahul Santhanam</text>
-      <title>Participant 41: Rahul Santhanam</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 42: Rohan Acharya" data-participant="42">
-      <ellipse class="face-region" cx="3289.5" cy="2247.5" rx="70.0" ry="84.5" />
-      <rect class="person-label-bg" x="3029.5" y="2684.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3289.5" y="2730.0">Rohan Acharya</text>
-      <title>Participant 42: Rohan Acharya</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 43: Jinqiao Hu" data-participant="43">
-      <ellipse class="face-region" cx="3568.0" cy="2278.0" rx="70.7" ry="85.3" />
-      <rect class="person-label-bg" x="3308.0" y="2799.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3568.0" y="2845.0">Jinqiao Hu</text>
-      <title>Participant 43: Jinqiao Hu</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 44: Navid Talebanfard" data-participant="44">
-      <ellipse class="face-region" cx="3886.5" cy="2286.5" rx="71.4" ry="86.1" />
-      <rect class="person-label-bg" x="3626.5" y="2914.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="3886.5" y="2960.0">Navid Talebanfard</text>
-      <title>Participant 44: Navid Talebanfard</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 45: Uri Meir" data-participant="45">
-      <ellipse class="face-region" cx="4250.0" cy="2294.0" rx="74.8" ry="90.2" />
-      <rect class="person-label-bg" x="3990.0" y="2684.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4250.0" y="2730.0">Uri Meir</text>
-      <title>Participant 45: Uri Meir</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 46: Subhasree Patro" data-participant="46">
-      <ellipse class="face-region" cx="4732.5" cy="2314.5" rx="72.8" ry="87.7" />
-      <rect class="person-label-bg" x="4472.5" y="2799.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="4732.5" y="2845.0">Subhasree Patro</text>
-      <title>Participant 46: Subhasree Patro</title>
-    </g>
-    <g class="participant" tabindex="0" role="button" aria-label="Participant 47: Suhail Sherif" data-participant="47">
-      <ellipse class="face-region" cx="5141.0" cy="2347.0" rx="76.2" ry="91.8" />
-      <rect class="person-label-bg" x="4881.0" y="2914.0" width="520" height="92" rx="15" />
-      <text class="person-label" data-label x="5141.0" y="2960.0">Suhail Sherif</text>
-      <title>Participant 47: Suhail Sherif</title>
-    </g>
-  </g>
-  <g class="foreground-connector-layer" aria-hidden="true">
-    <line class="foreground-connector" data-participant="1" x1="1151.0" y1="1567.3" x2="1151.0" y2="616.0" />
-    <line class="foreground-connector" data-participant="2" x1="1330.0" y1="1620.0" x2="1330.0" y2="731.0" />
-    <line class="foreground-connector" data-participant="3" x1="1617.0" y1="1661.2" x2="1617.0" y2="616.0" />
-    <line class="foreground-connector" data-participant="4" x1="2099.5" y1="1641.2" x2="2099.5" y2="731.0" />
-    <line class="foreground-connector" data-participant="5" x1="2384.0" y1="1643.9" x2="2384.0" y2="616.0" />
-    <line class="foreground-connector" data-participant="6" x1="2618.0" y1="1627.1" x2="2618.0" y2="731.0" />
-    <line class="foreground-connector" data-participant="7" x1="2946.0" y1="1624.0" x2="2946.0" y2="616.0" />
-    <line class="foreground-connector" data-participant="8" x1="3247.5" y1="1633.4" x2="3247.5" y2="731.0" />
-    <line class="foreground-connector" data-participant="9" x1="3616.0" y1="1624.9" x2="3616.0" y2="616.0" />
-    <line class="foreground-connector" data-participant="10" x1="4126.5" y1="1694.5" x2="4126.5" y2="731.0" />
-    <line class="foreground-connector" data-participant="11" x1="975.5" y1="1816.1" x2="975.5" y2="906.0" />
-    <line class="foreground-connector" data-participant="12" x1="1121.0" y1="1736.5" x2="1121.0" y2="1021.0" />
-    <line class="foreground-connector" data-participant="13" x1="1337.0" y1="1817.2" x2="1337.0" y2="1136.0" />
-    <line class="foreground-connector" data-participant="14" x1="1627.5" y1="1758.5" x2="1627.5" y2="1251.0" />
-    <line class="foreground-connector" data-participant="15" x1="1810.5" y1="1748.0" x2="1810.5" y2="1366.0" />
-    <line class="foreground-connector" data-participant="16" x1="1905.5" y1="1795.9" x2="1905.5" y2="906.0" />
-    <line class="foreground-connector" data-participant="17" x1="2229.5" y1="1790.9" x2="2229.5" y2="1021.0" />
-    <line class="foreground-connector" data-participant="18" x1="2494.5" y1="1820.9" x2="2494.5" y2="1136.0" />
-    <line class="foreground-connector" data-participant="19" x1="2776.5" y1="1774.6" x2="2776.5" y2="1251.0" />
-    <line class="foreground-connector" data-participant="20" x1="3093.0" y1="1834.3" x2="3093.0" y2="1366.0" />
-    <line class="foreground-connector" data-participant="21" x1="3359.5" y1="1856.4" x2="3359.5" y2="906.0" />
-    <line class="foreground-connector" data-participant="22" x1="3570.5" y1="1794.7" x2="3570.5" y2="1021.0" />
-    <line class="foreground-connector" data-participant="23" x1="3784.5" y1="1837.2" x2="3784.5" y2="1136.0" />
-    <line class="foreground-connector" data-participant="24" x1="3922.0" y1="1846.8" x2="3922.0" y2="1251.0" />
-    <line class="foreground-connector" data-participant="25" x1="4056.5" y1="1799.8" x2="4056.5" y2="1366.0" />
-    <line class="foreground-connector" data-participant="26" x1="4155.0" y1="1864.3" x2="4155.0" y2="906.0" />
-    <line class="foreground-connector" data-participant="27" x1="4302.5" y1="1849.9" x2="4302.5" y2="1021.0" />
-    <line class="foreground-connector" data-participant="28" x1="4383.0" y1="1892.1" x2="4383.0" y2="1136.0" />
-    <line class="foreground-connector" data-participant="29" x1="4547.0" y1="1815.9" x2="4547.0" y2="1251.0" />
-    <line class="foreground-connector" data-participant="30" x1="4619.5" y1="1868.0" x2="4619.5" y2="1366.0" />
-    <line class="foreground-connector" data-participant="31" x1="4696.0" y1="1828.1" x2="4696.0" y2="906.0" />
-    <line class="foreground-connector" data-participant="32" x1="4916.0" y1="1798.0" x2="4916.0" y2="1021.0" />
-    <line class="foreground-connector" data-participant="33" x1="5095.5" y1="1787.7" x2="5095.5" y2="1136.0" />
-    <line class="foreground-connector" data-participant="34" x1="5135.5" y1="1872.0" x2="5135.5" y2="1251.0" />
-    <line class="foreground-connector" data-participant="35" x1="5407.5" y1="1812.5" x2="5407.5" y2="1366.0" />
-    <line class="foreground-connector" data-participant="36" x1="1386.0" y1="2413.9" x2="1386.0" y2="2684.0" />
-    <line class="foreground-connector" data-participant="37" x1="1728.5" y1="2341.5" x2="1728.5" y2="2799.0" />
-    <line class="foreground-connector" data-participant="38" x1="2172.5" y1="2388.5" x2="2172.5" y2="2914.0" />
-    <line class="foreground-connector" data-participant="39" x1="2480.5" y1="2361.6" x2="2480.5" y2="2684.0" />
-    <line class="foreground-connector" data-participant="40" x1="2699.5" y1="2380.0" x2="2699.5" y2="2799.0" />
-    <line class="foreground-connector" data-participant="41" x1="2954.0" y1="2343.9" x2="2954.0" y2="2914.0" />
-    <line class="foreground-connector" data-participant="42" x1="3289.5" y1="2308.3" x2="3289.5" y2="2684.0" />
-    <line class="foreground-connector" data-participant="43" x1="3568.0" y1="2339.4" x2="3568.0" y2="2799.0" />
-    <line class="foreground-connector" data-participant="44" x1="3886.5" y1="2348.5" x2="3886.5" y2="2914.0" />
-    <line class="foreground-connector" data-participant="45" x1="4250.0" y1="2358.9" x2="4250.0" y2="2684.0" />
-    <line class="foreground-connector" data-participant="46" x1="4732.5" y1="2377.6" x2="4732.5" y2="2799.0" />
-    <line class="foreground-connector" data-participant="47" x1="5141.0" y1="2413.1" x2="5141.0" y2="2914.0" />
-  </g>
-</svg>
-      <section class="person-detail" aria-live="polite" hidden>
-        <h2 data-detail-name>Unknown</h2>
-        <dl>
-          <dt>Email</dt><dd data-detail-email>Not provided</dd>
-        </dl>
-      </section>
-    </div></div>
+  <div class="page-frame" aria-hidden="true">
+    <span class="corner corner-nw"></span>
+    <span class="corner corner-ne"></span>
+    <span class="corner corner-sw"></span>
+    <span class="corner corner-se"></span>
+    <span class="perforations"></span>
+  </div>
+
+  <header class="hero">
+    <h1>
+      <img src="assets/kaleidoscope26-logo.png" alt="Kaleidoscope'26" />
+    </h1>
+    <div class="intro-copy">
+      <p>
+        <strong>Complexity as a Kaleidoscope 2026</strong> brought researchers to Lisbon
+        from <span class="accent-text">30 July to 1 August 2026</span>, immediately before
+        CCC’26, for three days devoted to seeing familiar ideas from someone else’s angle.
+      </p>
+      <p>
+        The experiment reversed the usual research-talk format. In the spirit of a Bourbaki
+        seminar, speakers did not lecture about their own latest results: they paid homage to
+        work they admired, explaining its proofs and intuitions, the experience of thinking
+        about the topic, and the history and context that made it matter.
+      </p>
+      <p>
+        Participants also offered five-minute tributes to someone else’s theorem, result, or
+        paper, and brought favorite open problems for a collective session—small kaleidoscope
+        turns meant to encourage generous exposition, curiosity, and conversation.
+      </p>
+    </div>
+  </header>
+
+  <main class="report-shell">
+    <nav class="tabs" role="tablist" aria-label="Workshop report sections">
+      <button id="talks-tab" class="tab is-active" type="button" role="tab" aria-selected="true" aria-controls="talks" data-tab="talks">The talks</button>
+      <button id="participants-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="participants" data-tab="participants" tabindex="-1">Participants</button>
+      <button id="acknowledgements-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="acknowledgements" data-tab="acknowledgements" tabindex="-1">Acknowledgements</button>
+    </nav>
+
+    <section id="talks" class="tab-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="talks-tab">
+      <a class="introduction-recording" href="https://youtu.be/YN6rQcfVd4w">
+        <span class="introduction-play" aria-hidden="true">▶</span>
+        <span class="introduction-copy">
+          <span class="introduction-eyebrow">Start here · 9 min</span>
+          <span class="introduction-title">Welcome to Kaleidoscope'26</span>
+          <span class="introduction-description">The idea behind the workshop, why are we talking about other people's work?</span>
+        </span>
+        <span class="introduction-action">Watch introduction <span aria-hidden="true">↗</span></span>
+      </a>
+      <div class="section-separator">
+        <span>Main talks</span>
+      </div>
+      <div class="talk-list">
+        <article class="talk">
+          <div class="talk-number" aria-hidden="true">01</div>
+          <div class="talk-copy">
+            <h2>Dmytro Gavinsky</h2>
+            <h3>Computational evolvability <span>(as defined by L. Valiant)</span></h3>
+            <p>An exposition of Valiant’s notion of computational evolvability and the structural consequences that emerge from its formal framework.</p>
+          </div>
+          <div class="recording-status">Alas, no videos</div>
+        </article>
+
+        <article class="talk">
+          <div class="talk-number" aria-hidden="true">02</div>
+          <div class="talk-copy">
+            <h2>Anup Rao</h2>
+            <h3>Three monotone circuit lower bounds</h3>
+            <p>An exciting line of recent work has given strong monotone circuit lower bounds for a number of natural problems. I will give a unified exposition of the best known monotone circuit lower bounds for perfect matching, clique and the strongest monotone lower bounds for an explicit function that depends on <em>n</em> variables. The lecture will be accompanied by lecture notes that will be posted on the arxiv.</p>
+          </div>
+          <nav class="recording-status" aria-label="Anup Rao recordings">
+            <span class="recording-label">Videos</span>
+            <div class="recording-parts"><a href="https://youtu.be/2mJ16qnfQQ8" aria-label="Anup Rao, part 1">1</a><span aria-hidden="true">·</span><a href="https://youtu.be/nrcq82ldKfU" aria-label="Anup Rao, part 2">2</a><span aria-hidden="true">·</span><a href="https://youtu.be/loFalnv4pF0" aria-label="Anup Rao, part 3">3</a></div>
+          </nav>
+        </article>
+
+        <article class="talk">
+          <div class="talk-number" aria-hidden="true">03</div>
+          <div class="talk-copy">
+            <h2>Amir Yehudayoff</h2>
+            <h3>Compression towards structure</h3>
+            <p>We shall try to follow Jakob Steiner’s principle: “Calculating replaces, while geometry stimulates, thinking.” Two classical methods of compression towards structure are Steiner symmetrization in Euclidean space and shifting in the discrete hypercube. Both transform objects to a canonical form while preserving some of their properties. The goal of this lecture is to explore the elegance and power of these methods (focusing on the Euclidean setting).</p>
+          </div>
+          <nav class="recording-status" aria-label="Amir Yehudayoff recordings">
+            <span class="recording-label">Videos</span>
+            <div class="recording-parts"><a href="https://youtu.be/-9QYjjcNwAc" aria-label="Amir Yehudayoff, part 1">1</a><span aria-hidden="true">·</span><a href="https://youtu.be/apL_oPq9Kzg" aria-label="Amir Yehudayoff, part 2">2</a></div>
+          </nav>
+        </article>
+
+        <article class="talk">
+          <div class="talk-number" aria-hidden="true">04</div>
+          <div class="talk-copy">
+            <h2>Mary Wootters</h2>
+            <h3>Random ensembles and subspace designs <span>Recent advances in list-decoding and list-recovery</span></h3>
+            <p>List-decoding and list-recovery are notions in coding theory that have applications throughout complexity theory. In this talk, I’ll survey a recent line of work in coding theory that has led to breakthroughs in this area, including but not limited to <a href="https://arxiv.org/abs/2406.02238">these</a> <a href="https://arxiv.org/abs/2510.13775">three</a> <a href="https://arxiv.org/abs/2510.13777">papers</a>. If there is time, I’ll discuss some implications beyond coding theory.</p>
+          </div>
+          <nav class="recording-status" aria-label="Mary Wootters recordings">
+            <span class="recording-label">Videos</span>
+            <div class="recording-parts"><a href="https://youtu.be/rrWz-ePDaIA" aria-label="Mary Wootters, part 1">1</a><span aria-hidden="true">·</span><a href="https://youtu.be/3jdcx0I15BE" aria-label="Mary Wootters, part 2">2</a><span aria-hidden="true">·</span><a href="https://youtu.be/FBORpyu52u4" aria-label="Mary Wootters, part 3">3</a></div>
+          </nav>
+        </article>
+
+        <article class="talk">
+          <div class="talk-number" aria-hidden="true">05</div>
+          <div class="talk-copy">
+            <h2>Rahul Santhanam</h2>
+            <h3>Nisan-Wigderson as a Kaleidoscope</h3>
+            <p>The Nisan-Wigderson generator is a central construction in complexity theory. I will talk about the generator and its applications in areas such as information-theoretic pseudorandomness, structural complexity, learning, meta-complexity and algebraic complexity.</p>
+          </div>
+          <nav class="recording-status" aria-label="Rahul Santhanam recordings">
+            <span class="recording-label">Videos</span>
+            <div class="recording-parts"><a href="https://youtu.be/l6Fx09qP1zA" aria-label="Rahul Santhanam, part 1">1</a><span aria-hidden="true">·</span><a href="https://youtu.be/8_J38a19T1s" aria-label="Rahul Santhanam, part 2">2</a></div>
+          </nav>
+        </article>
+      </div>
+
+      <div class="section-separator section-separator-secondary">
+        <span>5 minute talks</span>
+      </div>
+      <aside class="favorites-strip">
+        <span class="patchwork" aria-hidden="true"></span>
+        <div>
+          <h2>A beloved theorem, result, or paper—and why I love it</h2>
+          <p>Participants used five minutes to pay tribute to someone else’s work and share what made it memorable.</p>
+        </div>
+      </aside>
+      <p>Watch the five-minute sessions: <a href="https://youtu.be/p5AB6SMCogU">Day 1</a> · <a href="https://youtu.be/qV4VLNXoH0I">Day 2</a> · <a href="https://youtu.be/UfKiGnscaHo">Day 3</a></p>
+      <div class="mini-talk-list" aria-label="Five-minute talks">
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">01</span>
+          <div><h3>Ronen Shaltiel</h3><p>Extractors for Samplable Distributions As Hardness Amplification</p><a href="https://youtu.be/p5AB6SMCogU?t=2" aria-label="Watch Ronen Shaltiel's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">02</span>
+          <div><h3>Chandrima Kayal</h3><p>Monte Carlo to Las Vegas for Recursively Composed Functions</p><a href="https://youtu.be/p5AB6SMCogU?t=367" aria-label="Watch Chandrima Kayal's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">03</span>
+          <div><h3>Sreejata Bhattacharya</h3><p>Certifying quantum states with single-qubit measurements</p><a href="https://youtu.be/p5AB6SMCogU?t=729" aria-label="Watch Sreejata Bhattacharya's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">04</span>
+          <div><h3>Varun Ramanathan</h3><p>The 2-LDC Kaleidoscope</p><a href="https://youtu.be/p5AB6SMCogU?t=1115" aria-label="Watch Varun Ramanathan's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">05</span>
+          <div><h3>Ian Mertz</h3><p>Unconditional Time-Space Lower Bounds For Algebraic Functions</p><a href="https://youtu.be/p5AB6SMCogU?t=1477" aria-label="Watch Ian Mertz's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">06</span>
+          <div><h3>Kunal Mittal</h3><p>Correlated sampling</p><a href="https://youtu.be/qV4VLNXoH0I?t=2" aria-label="Watch Kunal Mittal's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">07</span>
+          <div><h3>Morgan Shirley</h3><p>Covering graphs by the minimum number of equivalence relations</p><a href="https://youtu.be/qV4VLNXoH0I?t=384" aria-label="Watch Morgan Shirley's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">08</span>
+          <div><h3>Valentin Imbach</h3><p>Communication and Topology</p><a href="https://youtu.be/qV4VLNXoH0I?t=784" aria-label="Watch Valentin Imbach's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">09</span>
+          <div><h3>Atsuya Hasegawa</h3><p>Relating non-local quantum computation to information theoretic cryptography</p><a href="https://youtu.be/qV4VLNXoH0I?t=1430" aria-label="Watch Atsuya Hasegawa's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">10</span>
+          <div><h3>Bruno Bauwens</h3><p>Epstein-Levin theorem: sets have simple elements</p><a href="https://youtu.be/UfKiGnscaHo?t=3" aria-label="Watch Bruno Bauwens's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">11</span>
+          <div><h3>Dean Doron</h3><p>Composing Low-Space Algorithms</p><a href="https://youtu.be/UfKiGnscaHo?t=366" aria-label="Watch Dean Doron's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">12</span>
+          <div><h3>Yogesh Dahiya</h3><p>Lovett’s square-root rank upper bound for communication complexity</p><a href="https://youtu.be/UfKiGnscaHo?t=780" aria-label="Watch Yogesh Dahiya's talk">Watch talk ↗</a></div>
+        </article>
+        <article class="mini-talk">
+          <span class="mini-talk-number" aria-hidden="true">13</span>
+          <div><h3>Saraswati Girish Nanoti</h3><p>On de Bruijn sequences</p><a href="https://youtu.be/UfKiGnscaHo?t=1254" aria-label="Watch Saraswati Girish Nanoti's talk">Watch talk ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="participants" class="tab-panel" role="tabpanel" tabindex="0" aria-labelledby="participants-tab" hidden>
+      <div id="photo-frame" class="photo-frame">
+        <button id="photo-fullscreen-button" class="photo-fullscreen-button" type="button" aria-controls="group-photo-embed">Show photo in full screen</button>
+        <iframe id="group-photo-embed" src="photo.html?embed=1" title="Interactive Kaleidoscope'26 group photograph" loading="lazy" allow="fullscreen"></iframe>
+      </div>
+
+      <div class="section-heading">
+        <span class="patchwork" aria-hidden="true"></span>
+        <div>
+          <h2>Participants</h2>
+          <p>The photograph captures many of us together; the complete workshop list follows.</p>
+        </div>
+      </div>
+      <div id="participant-directory" class="participant-directory" aria-label="Workshop participants"></div>
+    </section>
+
+    <section id="acknowledgements" class="tab-panel acknowledgement-panel" role="tabpanel" tabindex="0" aria-labelledby="acknowledgements-tab" hidden>
+      <div class="thanks">
+        <h2>Thank you</h2>
+        <p>
+          To our five speakers for taking the extra trouble of preparing a talk about someone else's work;
+          to every five minute speaker for sharing something they like; to all participants for their
+          priceless attention; and to all the local helpers for making it possible for us to geek out.
+        </p>
+      </div>
+
+      <div class="ack-grid">
+        <section>
+          <h3><span class="patchwork patchwork-small" aria-hidden="true"></span>Organisers</h3>
+          <ul class="organisers">
+            <li><a href="https://brunoloff.wordpress.com/">Bruno Loff</a></li>
+            <li><a href="https://suhailsherif.github.io/">Suhail Sherif</a></li>
+            <li><a href="https://staffwww.dcs.shef.ac.uk/people/N.Talebanfard/">Navid Talebanfard</a></li>
+          </ul>
+        </section>
+        <section class="funding-section">
+          <h3><span class="patchwork patchwork-small" aria-hidden="true"></span>Funding</h3>
+          <p>
+            This workshop was funded by the European Union (ERC, HOFGA, 101041696).
+            It was also funded by national Portuguese funds through FCT — Fundação para a
+            Ciência e a Tecnologia, I.P., under the LASIGE Research Unit, ref. UID/00408/2025,
+            DOI <a href="https://doi.org/10.54499/UID/00408/2025">10.54499/UID/00408/2025</a>.
+          </p>
+          <p class="disclaimer">
+            Views and opinions expressed are those of the author(s) only and do not necessarily
+            reflect those of the European Union or the European Research Council. Neither the
+            European Union nor the granting authority can be held responsible for them.
+          </p>
+          <div class="funding-logos" aria-label="Workshop funders">
+            <img src="assets/en-funded-by-the-eu-pos.jpg" alt="Funded by the European Union" />
+            <img src="assets/fct-lasige-funding.jpg" alt="LASIGE — driven by excellence" />
+          </div>
+        </section>
+      </div>
+
+      <img
+        class="ack-machine-decoration"
+        src="assets/kaleidoscope26-turing-machine-transparent.png"
+        alt=""
+        aria-hidden="true"
+      />
+    </section>
   </main>
-  <script type="application/json" id="people-data">[{"number": 1, "row": "Back row", "name": "Farzan Byramji", "email": "fbyramji@ucsd.edu"}, {"number": 2, "row": "Back row", "name": "Manmatha Roy", "email": "reach.manmatha@gmail.com"}, {"number": 3, "row": "Back row", "name": "Chandrima Kayal", "email": "kayal@irif.fr"}, {"number": 4, "row": "Back row", "name": "Ian Mertz", "email": "iwmertz@gmail.com"}, {"number": 5, "row": "Back row", "name": "Valentin Imbach", "email": "valentin.imbach@epfl.ch"}, {"number": 6, "row": "Back row", "name": "Deniz Imrek", "email": "deniz.imrek@utexas.edu"}, {"number": 7, "row": "Back row", "name": "Bruno Bauwens", "email": "brbauwens@gmail.com"}, {"number": 8, "row": "Back row", "name": "Nitin Saurabh", "email": "nitin@cse.iith.ac.in"}, {"number": 9, "row": "Back row", "name": "Ronen Shaltiel", "email": "ronen@cs.haifa.ac.il"}, {"number": 10, "row": "Back row", "name": "Morgan Shirley", "email": "morganfshirley@gmail.com"}, {"number": 11, "row": "Middle row", "name": "Sreejata Bhattacharya", "email": "sreejata.bhattacharya@tifr.res.in"}, {"number": 12, "row": "Middle row", "name": "Ninad Rajgopal", "email": "ninad.rajgopal@gmail.com"}, {"number": 13, "row": "Middle row", "name": "Ian Orzel", "email": "iano@di.ku.dk"}, {"number": 14, "row": "Middle row", "name": "Théo Borém Fabris", "email": "thfa@di.ku.dk"}, {"number": 15, "row": "Middle row", "name": "Amir Shpilka", "email": "shpilka@tauex.tau.ac.il"}, {"number": 16, "row": "Middle row", "name": "Manny Levine", "email": "manny.edlevine@gmail.com"}, {"number": 17, "row": "Middle row", "name": "Petr Chmel", "email": "chmel@iuuk.mff.cuni.cz"}, {"number": 18, "row": "Middle row", "name": "Abhinav Vaishya", "email": "abhinav.vaishya@tecnico.ulisboa.pt"}, {"number": 19, "row": "Middle row", "name": "Rishav Gupta", "email": "rishavg@u.nus.edu"}, {"number": 20, "row": "Middle row", "name": "Tamana Kochmann", "email": "tamana.kochmann@gmail.com"}, {"number": 21, "row": "Middle row", "name": "Veerendra Kumar", "email": "uniqueeducation9@gmail.com"}, {"number": 22, "row": "Middle row", "name": "Francesco Carboni", "email": "carboni.2058986@studenti.uniroma1.it"}, {"number": 23, "row": "Middle row", "name": "Dean Doron", "email": "deand@bgu.ac.il"}, {"number": 24, "row": "Middle row", "name": "Mohit Jayanti Gurumukhani", "email": "mjgurumukhani@gmail.com"}, {"number": 25, "row": "Middle row", "name": "João Ribeiro", "email": "joao.ml.ribeiro1994@gmail.com"}, {"number": 26, "row": "Middle row", "name": "Varun Ramanathan", "email": "vara@di.ku.dk"}, {"number": 27, "row": "Middle row", "name": "Anup Rao", "email": "anuprao@cs.washington.edu"}, {"number": 28, "row": "Middle row", "name": "Chin Ho Lee", "email": "chinho.lee@ncsu.edu"}, {"number": 29, "row": "Middle row", "name": "Yogesh Dahiya", "email": "yogeshd2612@gmail.com"}, {"number": 30, "row": "Middle row", "name": "Yassine Ghannane", "email": "yagh@di.ku.dk"}, {"number": 31, "row": "Middle row", "name": "Pratyush Vempati", "email": "pratyush.vempati@students.iiit.ac.in"}, {"number": 32, "row": "Middle row", "name": "Kunal Mittal", "email": "km6375@nyu.edu"}, {"number": 33, "row": "Middle row", "name": "Jonas Conneryd", "email": "jonas.conneryd@cs.lth.se"}, {"number": 34, "row": "Middle row", "name": "David Engström", "email": "david.engstrom@cs.lth.se"}, {"number": 35, "row": "Middle row", "name": "Nithish Raja", "email": "n.r.raja@tue.nl"}, {"number": 36, "row": "Front row", "name": "Émile Larroque", "email": "larroque@irif.fr"}, {"number": 37, "row": "Front row", "name": "Mary Wootters", "email": "marykw@stanford.edu"}, {"number": 38, "row": "Front row", "name": "Saraswati Girish Nanoti", "email": "saraswatig@iisc.ac.in"}, {"number": 39, "row": "Front row", "name": "Arka Ray", "email": "arkaray@iisc.ac.in"}, {"number": 40, "row": "Front row", "name": "Bruno Loff", "email": "bruno.loff@gmail.com"}, {"number": 41, "row": "Front row", "name": "Rahul Santhanam", "email": "rahul.santhanam@cs.ox.ac.uk"}, {"number": 42, "row": "Front row", "name": "Rohan Acharya", "email": "rohan.acharya@cs.ox.ac.uk"}, {"number": 43, "row": "Front row", "name": "Jinqiao Hu", "email": "jinqiao.hu@warwick.ac.uk"}, {"number": 44, "row": "Front row", "name": "Navid Talebanfard", "email": "ntalebanfard@gmail.com"}, {"number": 45, "row": "Front row", "name": "Uri Meir", "email": "urimeir@mail.tau.ac.il"}, {"number": 46, "row": "Front row", "name": "Subhasree Patro", "email": "patrofied@gmail.com"}, {"number": 47, "row": "Front row", "name": "Suhail Sherif", "email": "suhail.sherif@gmail.com"}]</script>
-  <script>
-    const sheetCsvUrl = 'https://docs.google.com/spreadsheets/d/1rpXp_W1sz8pOjrp6FYiXxvMJA0uTw1o-kwLfoUe0TSQ/gviz/tq?tqx=out:csv&sheet=Identifications&range=A4:D51';
-    const liveSheetEnabled = false;
-    const groups = [...document.querySelectorAll('.participant')];
-    const foregroundConnectors = new Map(
-      [...document.querySelectorAll('.foreground-connector')].map(line => [Number(line.dataset.participant), line])
-    );
-    const detail = document.querySelector('.person-detail');
-    const labelToggle = document.querySelector('.label-toggle');
-    const detailName = document.querySelector('[data-detail-name]');
-    const detailEmail = document.querySelector('[data-detail-email]');
-    const savedPeople = JSON.parse(document.querySelector('#people-data').textContent);
-    const people = new Map(savedPeople.map(person => [Number(person.number), normalisePerson(person)]));
-    let pinnedNumber = null;
-    let hoverOnly = false;
 
-    try { hoverOnly = localStorage.getItem('group-photo-label-mode') === 'hover'; } catch (_) {}
+  <footer>
+    <a href="https://complexitykaleidoscope.wordpress.com/">Original workshop website</a>
+    <span aria-hidden="true">◆</span>
+    <span>Lisbon · 2026</span>
+  </footer>
 
-    function applyLabelMode() {
-      document.body.classList.toggle('labels-hover-only', hoverOnly);
-      labelToggle.setAttribute('aria-pressed', String(hoverOnly));
-      labelToggle.textContent = hoverOnly ? 'Labels: hover only' : 'Labels: always visible';
-    }
-
-    labelToggle.addEventListener('click', () => {
-      hoverOnly = !hoverOnly;
-      try { localStorage.setItem('group-photo-label-mode', hoverOnly ? 'hover' : 'all'); } catch (_) {}
-      applyLabelMode();
-    });
-
-    function normalisePerson(person) {
-      return {
-        number: Number(person.number),
-        row: String(person.row || ''),
-        name: String(person.name || '').trim(),
-        email: String(person.email || '').trim()
-      };
-    }
-
-    function visibleName(person) { return person.name || 'Unknown'; }
-    function shortName(name) { return name.length <= 23 ? name : `${name.slice(0, 22).trim()}…`; }
-
-    function updateLabels() {
-      groups.forEach(group => {
-        const number = Number(group.dataset.participant);
-        const person = people.get(number) || normalisePerson({ number });
-        const name = visibleName(person);
-        group.querySelector('[data-label]').textContent = shortName(name);
-        group.setAttribute('aria-label', `Participant ${number}: ${name}`);
-        const title = group.querySelector('title');
-        if (title) title.textContent = `Participant ${number}: ${name}`;
-      });
-      if (pinnedNumber !== null) showDetails(pinnedNumber);
-    }
-
-    function setTextOrLink(container, value, kind) {
-      container.replaceChildren();
-      if (!value) {
-        container.textContent = 'Not provided';
-        return;
-      }
-      const link = document.createElement('a');
-      link.textContent = value;
-      if (kind === 'email') {
-        link.href = `mailto:${value}`;
-      } else {
-        let candidate = /^https?:\/\//i.test(value) ? value : `https://${value}`;
-        try {
-          const parsed = new URL(candidate);
-          link.href = ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '#';
-        } catch (_) {
-          link.href = '#';
-        }
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-      }
-      container.append(link);
-    }
-
-    function showDetails(number) {
-      const person = people.get(Number(number)) || normalisePerson({ number });
-      detailName.textContent = visibleName(person);
-      setTextOrLink(detailEmail, person.email, 'email');
-      detail.hidden = false;
-    }
-
-    function hideDetails() {
-      if (pinnedNumber === null) detail.hidden = true;
-    }
-
-    function pin(number) {
-      pinnedNumber = Number(number);
-      groups.forEach(group => group.classList.toggle('is-pinned', Number(group.dataset.participant) === pinnedNumber));
-      foregroundConnectors.forEach((line, participant) => line.classList.toggle('is-pinned', participant === pinnedNumber));
-      showDetails(pinnedNumber);
-    }
-
-    function clearPin() {
-      pinnedNumber = null;
-      groups.forEach(group => group.classList.remove('is-pinned'));
-      foregroundConnectors.forEach(line => line.classList.remove('is-pinned'));
-      detail.hidden = true;
-    }
-
-    function setPreview(group, active) {
-      const number = Number(group.dataset.participant);
-      group.classList.toggle('is-preview', active);
-      foregroundConnectors.get(number)?.classList.toggle('is-preview', active);
-    }
-
-    groups.forEach(group => {
-      const number = Number(group.dataset.participant);
-      group.addEventListener('mouseenter', () => { setPreview(group, true); if (pinnedNumber === null) showDetails(number); });
-      group.addEventListener('mouseleave', () => { setPreview(group, false); if (pinnedNumber === null) hideDetails(); });
-      group.addEventListener('focus', () => { setPreview(group, true); if (pinnedNumber === null) showDetails(number); });
-      group.addEventListener('blur', () => { setPreview(group, false); if (pinnedNumber === null) hideDetails(); });
-      group.addEventListener('click', event => { event.stopPropagation(); pin(number); });
-      group.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          event.stopPropagation();
-          pin(number);
-        }
-      });
-    });
-
-    document.addEventListener('click', event => {
-      if (!event.target.closest('.participant') && !event.target.closest('.person-detail')) clearPin();
-    });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape') clearPin(); });
-
-    function parseCsv(text) {
-      const rows = [];
-      let row = [], cell = '', quoted = false;
-      for (let i = 0; i < text.length; i += 1) {
-        const char = text[i];
-        if (quoted) {
-          if (char === '"' && text[i + 1] === '"') { cell += '"'; i += 1; }
-          else if (char === '"') quoted = false;
-          else cell += char;
-        } else if (char === '"') quoted = true;
-        else if (char === ',') { row.push(cell); cell = ''; }
-        else if (char === '\n') { row.push(cell.replace(/\r$/, '')); rows.push(row); row = []; cell = ''; }
-        else cell += char;
-      }
-      if (cell || row.length) { row.push(cell.replace(/\r$/, '')); rows.push(row); }
-      return rows;
-    }
-
-    async function refreshFromSheet() {
-      try {
-        const response = await fetch(sheetCsvUrl, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`Sheet returned ${response.status}`);
-        const rows = parseCsv(await response.text());
-        const headerIndex = rows.findIndex(row => String(row[0] || '').trim().toLowerCase() === 'number');
-        if (headerIndex < 0) throw new Error('Sheet header was not found');
-        rows.slice(headerIndex + 1).forEach(row => {
-          const number = Number(row[0]);
-          if (!Number.isInteger(number) || number < 1 || number > 47) return;
-          people.set(number, normalisePerson({ number, row: row[1], name: row[2], email: row[3] }));
-        });
-        updateLabels();
-      } catch (error) {
-        console.info('Live Sheet data unavailable; using embedded snapshot.', error);
-      }
-    }
-
-    applyLabelMode();
-    updateLabels();
-    if (liveSheetEnabled) refreshFromSheet();
+  <script type="text/plain" id="participants-data">
+Abhinav Vaishya|IST, Lisbon
+Alon Dermer|University of Haifa
+Amir Shpilka|Tel Aviv University
+Amir Yehudayoff|University of Copenhagen
+Anup Rao|Washington University
+Arka Ray|Indian Institute of Science, Bengaluru
+Atsuya Hasegawa|Nagoya University
+Baocheng Sun|EPFL
+Bruno Bauwens|Higher School of Economics
+Bruno Cavalar|Oxford
+Bruno Loff|Lisbon
+Chandrima Kayal|IRIF, CNRS, France
+Chin Ho Lee|North Carolina State University
+Dana Moshkovitz|The University of Texas at Austin
+David Engström|Lund University
+Dean Doron|Ben-Gurion University
+Deniz Imrek|UT Austin
+Dmytro Gavinsky|Institute of Mathematics of the Czech Academy of Sciences
+Dora Woodruff|Massachusetts Institute of Technology
+Emanuel Levine|University of Pennsylvania
+Émile Larroque|IRIF
+Farzan Byramji|UC San Diego
+Francesca Ugazio|Lisbon
+Francesco Carboni|Sapienza University of Rome
+Guy Moshkovitz|City University of New York
+Himanshu Kumar|Indian Institute of Technology Ropar
+Ian Mertz|Charles University
+Jinqiao Hu|University of Warwick
+Jiyu Zhang|Bocconi University
+João Ribeiro|IT & IST – ULisboa
+Jonas Conneryd|Lund University
+Joaquim Jorge Pereira|CEOV, Portuguese Navy
+Kunal Mittal|New York University
+Lianna Hambardzumyan|University of Copenhagen
+Luis Pereira|University of Lisbon
+Mandar Juvekar|Boston University
+Manmatha Roy|Indian Statistical Institute, Kolkata
+Mary Wootters|Stanford University
+Mohammad Hossein Ebtehaj|University of Waterloo
+Mohit Jayanti Gurumukhani|Cornell University
+Morgan Shirley|Lund University
+Navid Talebanfard|Sheffield
+Ninad Rajgopal|Charles University
+Nithish Raja|Eindhoven University of Technology
+Nitin Saurabh|IIT Hyderabad, India
+Patrícia Cortés de Zea Bermudez|FCUL, Lisbon
+Petr Chmel|Computer Science Institute of Charles University
+Prateek P. Kulkarni|PES University
+Pratyush Vempati|International Institute of Information Technology, Hyderabad
+Rahul Santhanam|University of Oxford
+Rishav Gupta|National University of Singapore
+Rohan Acharya|University of Oxford
+Ronen Shaltiel|University of Haifa
+Sagnik Dutta|Max Planck Institute for Informatics
+Samuel Pearson|IST, Lisbon
+Sanyam Agarwal|Saarland University
+Saraswati Girish Nanoti|Indian Institute of Science
+Sreejata Kishor Bhattacharya|Tata Institute of Fundamental Research, Mumbai
+Subhasree Patro|Eindhoven University of Technology
+Suhail Sherif|FCUL, Lisbon
+Swarnalipa Datta|Indian Statistical Institute, Kolkata, India
+Tamana Kochmann|Creative-Agents.net
+Théo Borém Fabris|University of Copenhagen
+Uri Meir|Tel Aviv University
+Valentin Imbach|EPFL
+Varun Ramanathan|University of Copenhagen
+Veerendra Kumar|Bolyai Institute, University of Szeged
+Weiqiang Yuan|EPFL
+Yassine Ghannane|University of Copenhagen
+Yogesh Dahiya|UC San Diego
   </script>
+  <script src="site.js"></script>
 </body>
 </html>
